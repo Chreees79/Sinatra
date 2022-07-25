@@ -2,18 +2,21 @@ require 'csv'
 class Gossip
   attr_accessor :author, :content, :comment
 
+# permet d'initialiser un potin avec ses paramètres
   def initialize(author, content, comment)
     @author = author
     @content = content
     @comment = comment
   end
 
+# permet d'enregistrer un potin dans un fichier CSV
   def save
     CSV.open("./db/gossip.csv", "ab") do |csv|
       csv << [@author, @content, @comment]
     end
   end
 
+# permet de récupérer tous les potins dans un array
   def self.all
     all_gossips = []
     CSV.read("db/gossip.csv").each do |row| 
@@ -22,6 +25,7 @@ class Gossip
     return all_gossips
   end
 
+# permet de récupérer un potin à partir de son id
   def self.find(id)
     searched_gossip = []
     CSV.open('db/gossip.csv').each do |row|
@@ -30,6 +34,7 @@ class Gossip
     return searched_gossip[id.to_i - 1]
   end
 
+# permet de modifier un potin à partir de son id et de le mettre à jour
   def self.update(id, updated_author, updated_content, updated_comment)
     id = id.to_i - 1
     new_list_gossips = CSV.read("db/gossip.csv")
